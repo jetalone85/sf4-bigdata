@@ -1,0 +1,14 @@
+version: "2"
+options:
+    verbose: true
+syncs:
+    app-sync:
+        sync_strategy: unison
+        src: ${APP_PATH}
+        sync_excludes: ['var/cache', '.git', '.idea']
+    db-sync:
+        sync_strategy: unison
+        src: ${DB_PATH}
+    bd-sync:
+        sync_strategy: unison
+        src: ${BD_PATH}
