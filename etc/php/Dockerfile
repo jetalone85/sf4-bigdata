@@ -6,14 +6,12 @@ RUN apt-get update > /dev/null && apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
-    libpng12-dev \
     zlib1g-dev \
     libicu-dev \
     jpegoptim \
     g++ \
     libxrender1 \
     libfontconfig \
-    npm \
     nano > /dev/null \
     && docker-php-ext-install -j$(nproc) iconv mcrypt > /dev/null \
     && docker-php-ext-install intl > /dev/null \
