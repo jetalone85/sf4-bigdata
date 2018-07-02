@@ -15,7 +15,7 @@ services:
         ports:
             - ${PORT_DATABASE}:3306
         volumes:
-            - db-sync:/var/lib/mysql:nocopy
+            - ./data/mysql/:/var/lib/mysql
     php:
         build:
             context: ./etc/php
@@ -26,7 +26,7 @@ services:
         restart: on-failure
         volumes:
             - ./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini
-            - app-sync:/var/www/html:nocopy
+            - ./application/:/var/www/html
             - ./etc/log/nginx:/var/log/nginx
             - ./etc/php/entrypoint.sh:/bin/entrypoint.sh
         ports:
@@ -43,7 +43,7 @@ services:
             - ./etc/nginx/application.conf:/etc/nginx/sites-available/application.conf
             - ./etc/nginx/application.conf:/etc/nginx/sites-enabled/application
             - ./etc/log/nginx:/var/log/nginx
-            - app-sync:/var/www/html:nocopy
+            - /application/:/var/www/html
         depends_on:
             - php
             - mysql
@@ -52,7 +52,7 @@ services:
         container_name: webpack
         restart: always
         volumes:
-            - app-sync:/var/www/html:nocopy
+            - /application/:/var/www/html
         command: ["sleep","infinity"]
 
     redis:
@@ -181,9 +181,6 @@ services:
         ports:
           - "8082:8082"
 
-
- https://github.com/nicolargo/docker-influxdb-grafana
-
     influxdb:
         image: influxdb:latest
         container_name: influxdb
@@ -213,8 +210,6 @@ services:
           - './etc/env.grafana'
         links:
           - influxdb
-
- https://github.com/burtcorp/druid-docker
 
     historical:
         build: ./etc/druid
@@ -428,9 +423,3 @@ services:
           - 8088:8088
         environment:
           - NAMENODE_HOST=namenode
-
-volumes:
-    app-sync:
-        external: true
-    db-sync:
-        external: true
