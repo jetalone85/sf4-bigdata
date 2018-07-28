@@ -3,3 +3,4 @@
 /.env
 /data/
 /etc/nifi/conf/archive/
+/etc/nifi/conf/nifi.properties
