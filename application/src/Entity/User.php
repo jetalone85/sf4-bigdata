@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+ * @ORM\Cache(usage="READ_WRITE")
  */
 class User
 {
@@ -22,19 +22,19 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     * @ORM\Cache(usage="READ_WRITE")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     * @ORM\Cache(usage="READ_WRITE")
      */
     private $login;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     * @ORM\Cache(usage="READ_WRITE")
      */
     private $email;
 
