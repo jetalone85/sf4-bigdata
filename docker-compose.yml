@@ -84,58 +84,59 @@ services:
     networks:
       - bigdata
 
-    mysql:
-        image: mysql:5.7
-        container_name: mysql
-        restart: on-failure
-        environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: database
-            MYSQL_USER: user
-            MYSQL_PASSWORD: user
-        command:
-          - --character-set-server=utf8
-          - --collation-server=utf8_unicode_ci
-        volumes:
-            - ./data/mysql/:/var/lib/mysql
+  mysql:
+      image: mysql:5.7
+      container_name: mysql
+      restart: on-failure
+      environment:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: database
+          MYSQL_USER: user
+          MYSQL_PASSWORD: user
+      command:
+        - --character-set-server=utf8
+        - --collation-server=utf8_unicode_ci
+      volumes:
+          - ./data/mysql/:/var/lib/mysql
 
-    php:
-        build:
-            context: ./etc/php
-        container_name: php
-        entrypoint: sh /bin/entrypoint.sh php-fpm
-        links:
-            - mysql:mysqldb
-        restart: on-failure
-        volumes:
-            - ./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini
-            - ./application/:/var/www/html
-            - ./etc/log/nginx:/var/log/nginx
-            - ./etc/php/entrypoint.sh:/bin/entrypoint.sh
+  php:
+      build:
+          context: ./etc/php
+      container_name: php
+      entrypoint: sh /bin/entrypoint.sh php-fpm
+      links:
+          - mysql:mysqldb
+      restart: on-failure
+      volumes:
+          - ./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+          - ./application/:/var/www/html
+          - ./etc/log/nginx:/var/log/nginx
+          - ./etc/php/entrypoint.sh:/bin/entrypoint.sh
 
-    web:
-        build: ./etc/nginx
-        container_name: nginx
-        ports:
-            - 80:80
-            - 443:443
-        restart: on-failure
-        volumes:
-            - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ./etc/nginx/application.conf:/etc/nginx/sites-available/application.conf
-            - ./etc/nginx/application.conf:/etc/nginx/sites-enabled/application
-            - ./etc/log/nginx:/var/log/nginx
-            - /application/:/var/www/html
-        depends_on:
-            - php
-            - mysql
-    webpack:
-        build: ./etc/webpack
-        container_name: webpack
-        restart: always
-        volumes:
-            - /application/:/var/www/html
-        command: ["sleep","infinity"]
+  web:
+      build: ./etc/nginx
+      container_name: nginx
+      ports:
+          - 80:80
+          - 443:443
+      restart: on-failure
+      volumes:
+          - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+          - ./etc/nginx/application.conf:/etc/nginx/sites-available/application.conf
+          - ./etc/nginx/application.conf:/etc/nginx/sites-enabled/application
+          - ./etc/log/nginx:/var/log/nginx
+          - /application/:/var/www/html
+      depends_on:
+          - php
+          - mysql
+  webpack:
+      build: ./etc/webpack
+      container_name: webpack
+      restart: always
+      volumes:
+          - /application/:/var/www/html
+      command: ["sleep","infinity"]
+
 #
 #    zookeeper:
 #        image: zookeeper:latest
