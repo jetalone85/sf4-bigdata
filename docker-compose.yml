@@ -127,7 +127,7 @@ services:
       container_name: webpack
       restart: always
       volumes:
-          - /application/:/var/www/html
+          - ./application/:/var/www/html
       command: ["sleep","infinity"]
 
 #
