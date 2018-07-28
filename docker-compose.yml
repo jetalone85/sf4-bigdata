@@ -48,23 +48,8 @@ services:
       - ./etc/nifi/lib:/opt/nifi/lib
     ports:
       - "9090:8080"
-#    labels:
-#      - "traefik.frontend.rule=Host:nifi.docker.localhost"
-#      - "traefik.port=8080"
     networks:
       - bigdata
-
-#  reverse-proxy:
-#    image: traefik
-#    container_name: reverse-proxy
-#    command: --api --docker
-#    ports:
-#      - "8080:8080"
-#      - "80:80"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#    networks:
-#      - bigdata
 
 networks:
   bigdata: ~
