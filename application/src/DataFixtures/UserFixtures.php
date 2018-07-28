@@ -10,11 +10,13 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $faker = Faker\Factory::create();
+
         for ($i = 0; $i < 2000; $i++) {
             $user = new User();
-            $user->setName('name-' . $i);
-            $user->setLogin('login-' . $i);
-            $user->setEmail('email-' . $i . '@ubuntu');
+            $user->setName($faker->name);
+            $user->setLogin($faker->userName);
+            $user->setEmail($faker->email);
             $manager->persist($user);
         }
         $manager->flush();
