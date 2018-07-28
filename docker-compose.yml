@@ -51,38 +51,42 @@ services:
     networks:
       - bigdata
 
-networks:
-  bigdata: ~
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - ./data/redis:/data
 
-########################################################################################################################
-#  redis:
-#    image: redis
-#    restart: always
-#    volumes:
-#      - ./data/redis:/data
-#  postgres:
-#    image: postgres
-#    restart: always
-#    environment:
-#      POSTGRES_DB: superset
-#      POSTGRES_PASSWORD: superset
-#      POSTGRES_USER: superset
-#    volumes:
-#      - ./data/postgres:/var/lib/postgresql/data
-#    ports:
-#      - 5432:5432
-#  superset:
-#    image: amancevice/superset
-#    restart: always
-#    depends_on:
-#      - postgres
-#      - redis
-#    environment:
-#      MAPBOX_API_KEY: ${MAPBOX_API_KEY}
-#    ports:
-#      - "8088:8088"
-#    volumes:
-#      - ./superset_config.py:/etc/superset/superset_config.py
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: superset
+      POSTGRES_PASSWORD: superset
+      POSTGRES_USER: superset
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - bigdata
+
+  superset:
+    image: amancevice/superset
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      MAPBOX_API_KEY: ${MAPBOX_API_KEY}
+    ports:
+      - "8088:8088"
+    volumes:
+      - ./superset_config.py:/etc/superset/superset_config.py
+    networks:
+      - bigdata
+
+
 #
 #    mysql:
 #        image: mysql:5.7
@@ -496,3 +500,7 @@ networks:
 #          - 8088:8088
 #        environment:
 #          - NAMENODE_HOST=namenode
+
+
+networks:
+  bigdata: ~
