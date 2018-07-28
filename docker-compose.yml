@@ -57,6 +57,20 @@ services:
     volumes:
       - ./data/redis:/data
 
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: default
+      POSTGRES_PASSWORD: user
+      POSTGRES_USER: user
+      POSTGRES_CHARSET: "UTF8"
+    volumes:
+      - ./var/lib/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - default
+
   postgres:
     image: postgres
     restart: always
@@ -64,6 +78,7 @@ services:
       POSTGRES_DB: superset
       POSTGRES_PASSWORD: superset
       POSTGRES_USER: superset
+      POSTGRES_CHARSET: "UTF8"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     networks:
